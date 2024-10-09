@@ -3,6 +3,7 @@ class DFAStruct():
         self.alphabet = alphabet
         self.states = {}
         self.final_state = ''
+        self.start_state = ''
 
     def add_node(self):
         self.states[str(len(self.states.keys()))] = {}
@@ -21,17 +22,23 @@ class DFAStruct():
             raise Exception(f'{state} does not exist')
         self.final_state = state
 
+    def set_start_state(self,state:str):
+        if state not in self.states.keys():
+            raise Exception(f'{state} does not exist')
+        self.start_state = state
+
     def verify(self):
         missing_trans = {}
         for Node_State in self.states.keys():
-            if Node_State == self.final_state:
-                continue
             if set(self.states[Node_State].keys()) != set(self.alphabet):
                 missing_trans[Node_State] = set(self.alphabet) - set(self.states[Node_State].keys())
                 continue
         if missing_trans != {}:
             raise Exception(f'missing transistions \n {missing_trans}')
-
+        if self.start_state == '':
+            raise Exception(f'missing start state')
+        if self.final_state == '':
+            raise Exception(f'missing final state')
 
     def printTransistionTable(self):
         print(f'Alphabet = {self.alphabet}')
@@ -39,3 +46,12 @@ class DFAStruct():
             print(f"N {Node}: {self.states[Node]}")
 
 
+    def read(self,string:str) -> bool:
+        self.verify()
+        state = self.start_state
+        for trans in string:
+            state = self.states[state][trans]
+        if state == self.final_state:
+            return True
+        return False
+        
