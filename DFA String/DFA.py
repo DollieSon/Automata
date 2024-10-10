@@ -54,4 +54,22 @@ class DFAStruct():
         if state == self.final_state:
             return True
         return False
-        
+    
+    def get_nodes(self):
+        return self.states.keys()
+
+    def remove_node(self,node:str):
+        if node not in self.states.keys():
+            raise Exception(f'{node} is not a valid state')
+        if node == self.final_state:
+            self.final_state = ''
+        if node == self.start_state:
+            self.start_state = ''
+        self.states.pop(node)
+
+    def remove_transistion(self,node:str,transition:str):
+        if node not in self.states.keys():
+            raise Exception(f'{node} is not a valid state')
+        if transition not in self.alphabet:
+            raise Exception(f'{transition} is not valid transition')
+        self.states[node][transition] = ''
