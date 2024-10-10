@@ -1,17 +1,6 @@
 import DFA
 
-something = DFA.DFAStruct(['a','b'])
-print(something.add_node())
-print(something.add_node())
-something.set_final_state('1')
-something.set_start_state('0')
-something.add_transistion('0','1','a')
-something.add_transistion('0','0','b')
-something.add_transistion('1','1','b')
-something.add_transistion('1','1','a')
-something.verify()
-res = something.read('bb')
-print(res)
+
 
 errors = [
     "Long Letter"
@@ -40,7 +29,7 @@ while True:
             print(curr_error)
         else:
             curr_error = ''
-            mode = modes[0]
+            mode = modes[1]
             break
 
     if mode == modes[1]:
@@ -58,15 +47,18 @@ while True:
             if len(main_DFA.get_nodes()) == 0:
                 print("Not enougn nodes")
                 continue
-            print(f'available nodes {main_DFA.get_nodes()}')
-            from_node = input('enter from(q0) node:')
-            to_node = input('enter to(q1) node:')
-            print(f'available transistions {main_DFA.alphabet}')
-            transition = input('enter transition:')
-            try:
-                main_DFA.add_transistion(from_node,to_node,transition)
-            except Exception as e:
-                print(e)
+            while True:
+                print(f'available nodes {main_DFA.get_nodes()}')
+                from_node = input('enter from(q0) node:')
+                if from_node == '':
+                    break
+                to_node = input('enter to(q1) node:')
+                print(f'available transistions {main_DFA.alphabet}')
+                transition = input('enter transition:')
+                try:
+                    main_DFA.add_transistion(from_node,to_node,transition)
+                except Exception as e:
+                    print(e)
         elif s_trans == '2': # remove transition
             if len(main_DFA.get_nodes()) == 0:
                 print("Not enougn nodes")
