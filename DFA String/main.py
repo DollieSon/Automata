@@ -19,7 +19,8 @@ errors = [
 modes = [
     "input alphabet mode",
     "input states mode",
-    "input string mode"
+    "input string mode",
+    "stop/retry mode"
 ]
 while True:
     curr_error = ''
@@ -28,6 +29,7 @@ while True:
     #starting here
     mode = modes[0]
     while mode == modes[0]: # getting alphabet
+        alphabet = []
         temp_alp = input("Enter the alphabet:")
         for toks in temp_alp.split(' '):
             if len(toks) != 1:
@@ -38,7 +40,7 @@ while True:
             print(curr_error)
         else:
             curr_error = ''
-            mode = modes[1]
+            mode = modes[0]
             break
 
     if mode == modes[1]:
@@ -47,7 +49,7 @@ while True:
 
     while mode == modes[1]:
         #ask to add state or transistion
-        s_trans = input('[0] add transistion \n[1] add state \n[2] remove transition\n[3]remove state\n[4]Print Structure\n[5] Test String\n[6]Set start and end state')
+        s_trans = input('[0] add transistion \t[1] add state \n[2] remove transition\t[3]remove state\n[4]Print Structure\t[5] Test String\n[6]Set start and end state\n')
         if s_trans == '1':# add node
             new_state = main_DFA.add_node()
             print(f'added new state {new_state}')
@@ -107,7 +109,29 @@ while True:
                     main_DFA.set_final_state(end_node)
             except Exception as e:
                 print(e)
+        elif s_trans =='4':
+            print(f'DFA Structure\n{main_DFA.printTransistionTable()}')
         else:
             print("Invalid choice")
     print('Done')
 
+    while mode == modes[2]:
+        main_DFA.printTransistionTable()
+        string = input('Enter the string to test the DFA:')
+        if string == '':
+            stop = input('Press Enter to Stop: ')
+            if stop == '':
+                mode = modes[3]
+                break
+        print(f'String {string} == {main_DFA.read(string)}')
+    
+    if mode == mode[3]:
+        answer = input(f'[0] Exit [1]Reset Alphabet [2]Reset Nodes and Transitions [3]Retry String Input\n')
+        if answer == '0':
+            break
+        if answer == '1':
+            mode = modes[0]
+        if answer == '2':
+            mode = modes[1]
+        if answer =='3':
+            mode = modes[2]
