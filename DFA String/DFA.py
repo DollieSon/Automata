@@ -1,3 +1,4 @@
+import json
 class DFAStruct():
     def __init__(self,alphabet:list):
         self.alphabet = alphabet
@@ -73,3 +74,40 @@ class DFAStruct():
         if transition not in self.alphabet:
             raise Exception(f'{transition} is not valid transition')
         self.states[node][transition] = ''
+
+    # DFAStruct = {
+    # "alphabet" = [],
+    # "start" = "",
+    # "final" = "",
+    # "states = {
+    #     }
+    # }
+
+    base_location = "..\\SavedDFA\\"
+
+    def to_json(self,location:str):
+        try: 
+            self.verify()
+            jason = {
+                "alphabet" : self.alphabet,
+                "start" : self.start_state,
+                "final" : self.final_state,
+                "states" : self.states
+            }
+            with open(DFAStruct.base_location + location, "w") as outfile:
+                json.dump(jason,outfile,indent=4)
+        except Exception as e:
+            print(e)
+        
+    def from_json(location:str):# -> DFASTRUCT
+        with open(DFAStruct.base_location + location, "r") as file:
+            jason = json.load(file)
+            dfa = DFAStruct(jason["alphabet"])
+            dfa.start_state = jason['start']       
+            dfa.final_state = jason['final']       
+            dfa.states = jason['states']       
+            try: 
+                dfa.verify()
+            except Exception as E:
+                print(E)
+            return dfa

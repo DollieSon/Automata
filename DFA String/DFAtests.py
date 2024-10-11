@@ -1,3 +1,4 @@
+import DFA
 something = DFA.DFAStruct(['a','b'])
 print(something.add_node())
 print(something.add_node())
@@ -10,3 +11,7 @@ something.add_transistion('1','1','a')
 something.verify()
 res = something.read('bb')
 print(res)
+DFA.DFAStruct.to_json(something,'oddA.js')
+# something = DFA.DFAStruct.from_json('oddA.js')
+# res = something.read('bba')
+# print(res)
